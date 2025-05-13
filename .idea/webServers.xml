@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="ac6585f4-770c-4170-8ce2-d9ed868540d2" name="rk8">
+        <fileTransfer rootFolder="/home/muhammad-liaqat" accessType="SFTP" host="rk8.cp.jku.at" port="22" sshConfigId="b98d6bfc-fdf6-4be2-8cc0-c9f684a34a86" sshConfig="muhammad-liaqat@rk8.cp.jku.at:22 agent" authAgent="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
