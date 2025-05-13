@@ -86,7 +86,7 @@ class XDVideo(data.DataLoader):
             split_file_audio = open(split_path_audio, 'r', encoding="utf-8")
             self.aud_list = []
             for line in split_file_audio:
-                # Split the line (assuming you're splitting by whitespace or any delimiter)
+                # Split the line
                 # print(f"Audio file line: {line}")
                 line_split = line.split()
                 # print(f"audio split line: {line_split}")

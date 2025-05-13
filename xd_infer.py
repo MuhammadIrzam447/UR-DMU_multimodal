@@ -10,7 +10,6 @@ from model import WSAD
 from tqdm import tqdm
 from dataset_loader import data
 from sklearn.metrics import roc_curve,auc,precision_recall_curve
-import random  # <-- Required for random sampling
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 
@@ -88,14 +87,10 @@ if __name__ == "__main__":
     #         batch_size = 5,
     #         shuffle = False, num_workers = config.num_workers,
     #         worker_init_fn = worker_init_fn)
-    # # missing_modality = True
-    # # missing_values = [0, 10, 30, 50, 70, 90, 100] if missing_modality else [0]
-    # # for missing in missing_values:
-    # # valid(missing, net, config, test_loader, model_file = os.path.join(args.model_path, "xd_trans_2022.pkl"))
     # valid(net, config, test_loader, model_file = os.path.join(args.model_path, "xd_trans_2022.pkl"))
     if config.modal == "multimodal" and args.missing_modality == True:
         # Multimodal evaluation with varying missing percentages
-        from dataset_loader import XDVideoMisM  # Replace with actual path or name if needed
+        from dataset_loader import XDVideoMisM
 
         for mismodal in ['rgb', 'audio']:
             for missing in [0, 10, 30, 50, 70, 90, 100]:

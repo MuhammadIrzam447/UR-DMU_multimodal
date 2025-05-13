@@ -17,14 +17,7 @@ from tqdm import tqdm
 import os
 
 import logging
-# logging.getLogger('tornado.access').setLevel(logging.WARNING)
-# logging.getLogger('tornado.general').setLevel(logging.ERROR)
-# logging.getLogger('tornado.application').setLevel(logging.ERROR)
-# local terminal: ssh -i C:/Users/HP/.ssh/id_ed25519 -L 2022:localhost:2022 muhammad-liaqat@rk8.cp.jku.at
-# start a screen
-# start wisdom: python -m visdom.server -p 2022
-# enter
-# start program
+
 if __name__ == "__main__":
 
     args = parse_args()
@@ -77,7 +70,6 @@ if __name__ == "__main__":
         api_key="",
         project_name="dmu",
         workspace="muhammadirzam447"
-        # log_env=False  # Disable environment details logging
     )
     experiment_name = experiment.get_name()
     print(f"Experiment name: {experiment_name}")
