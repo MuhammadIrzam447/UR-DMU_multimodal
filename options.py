@@ -14,10 +14,11 @@ def parse_args():
     parser.add_argument('--batch_size', type = int, default = 64)
     parser.add_argument('--num_workers', type = int, default = 0)
     parser.add_argument('--num_segments', type = int, default = 32)
-    parser.add_argument('--seed', type = int, default = 123, help = 'random seed (-1 for no manual seed) 2022 default')
+    parser.add_argument('--seed', type = int, default = 7777, help = 'random seed (-1 for no manual seed) 2022 default')
     parser.add_argument('--model_file', type = str, default = "trans_{}.pkl".format(seed), help = 'the path of pre-trained model file')
     parser.add_argument('--debug', action = 'store_true')
-    parser.add_argument('--missing_modality', action='store_true', help='Set this flag if some modality is missing')
+    parser.add_argument('--missing_modality', action='store_true', help='Set this flag for multimodal missing modality evaluation')
+    # parser.add_argument('--single_branch', action='store_true', help='Set this flag if single_branch training and evaluation is required')
 
     return init_args(parser.parse_args())
 

@@ -21,22 +21,59 @@ def test(net, config, experiment, test_loader, test_info, step, model_file = Non
         frame_predict = None
         cls_label = []
         cls_pre = []
-        for i in range(len(test_loader.dataset)//5):
 
-            _data, _label = next(load_iter)
-            
-            _data = _data.cuda()
-            _label = _label.cuda()
-            cls_label.append(int(_label[0]))
-            res = net(_data)   
-        
-            a_predict = res["frame"].cpu().numpy().mean(0)   
-            cls_pre.append(1 if a_predict.max()>0.5 else 0)          
-            fpre_ = np.repeat(a_predict, 16)
-            if frame_predict is None:         
-                frame_predict = fpre_
+        for i in range(len(test_loader.dataset) // 5):
+            batch = next(load_iter)
+
+            # Check if batch contains RGB, Audio, and label
+            if isinstance(batch, (list, tuple)) and len(batch) == 3:
+                rgb_data, audio_data, label = batch
+                rgb_data = rgb_data.cuda()
+                audio_data = audio_data.cuda()
+                label = label.cuda()
+
+                cls_label.append(int(label[0]))
+
+                # Forward pass for both modalities
+                rgb_res = net(rgb_data)
+                audio_res = net(audio_data)
+
+                # Frame predictions
+                rgb_predict = rgb_res["frame"].cpu().numpy().mean(0)
+                audio_predict = audio_res["frame"].cpu().numpy().mean(0)
+
+                # Combine predictions
+                combined_predict = (rgb_predict + audio_predict) / 2.0
+
+                # Binary classification decision
+                cls_pre.append(1 if combined_predict.max() > 0.5 else 0)
+
+                # Expand to frame level (repetition)
+                fpre_ = np.repeat(combined_predict, 16)
+
+                if frame_predict is None:
+                    frame_predict = fpre_
+                else:
+                    frame_predict = np.concatenate([frame_predict, fpre_])
+
             else:
-                frame_predict = np.concatenate([frame_predict, fpre_])   
+                # Fallback: original single input (only RGB or video input)
+                data, label = batch
+                data = data.cuda()
+                label = label.cuda()
+
+                cls_label.append(int(label[0]))
+
+                res = net(data)
+                a_predict = res["frame"].cpu().numpy().mean(0)
+
+                cls_pre.append(1 if a_predict.max() > 0.5 else 0)
+                fpre_ = np.repeat(a_predict, 16)
+
+                if frame_predict is None:
+                    frame_predict = fpre_
+                else:
+                    frame_predict = np.concatenate([frame_predict, fpre_])
 
         fpr, tpr, _ = roc_curve(frame_gt, frame_predict)
         auc_score = auc(fpr, tpr)

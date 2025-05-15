@@ -53,6 +53,14 @@ def valid(net, config, test_loader, model_file = None):
         # np.save('frame_label/xd_frame_pre.npy', frame_predict)
         # np.save('frame_label/xd_pre_dict.npy', pre_dict)
         # np.save('frame_label/xd_gt_dict.npy', gt_dict)
+
+        if len(frame_gt) != len(frame_predict):
+            dropped = abs(len(frame_gt) - len(frame_predict))
+            print(f"⚠️ Warning: Dropping {dropped} frames to match lengths between ground truth and predictions.")
+            min_len = min(len(frame_gt), len(frame_predict))
+            frame_gt = frame_gt[:min_len]
+            frame_predict = frame_predict[:min_len]
+
         fpr,tpr,_ = roc_curve(frame_gt, frame_predict)
         auc_score = auc(fpr, tpr)
         # print("auc:{:.4f}".format(auc_score))
@@ -90,14 +98,15 @@ if __name__ == "__main__":
     # valid(net, config, test_loader, model_file = os.path.join(args.model_path, "xd_trans_2022.pkl"))
     if config.modal == "multimodal" and args.missing_modality == True:
         # Multimodal evaluation with varying missing percentages
-        from dataset_loader import XDVideoMisM
+        from dataset_loader import XDVideoMisM # XDVideoMisM for missing
+        from dataset_loader import XDVideoCorrM # XDVideoMisM for corruption
 
-        for mismodal in ['rgb', 'audio']:
-            for missing in [0, 10, 30, 50, 70, 90, 100]:
+        for mismodal in ['rgb','audio']: # 'rgb','audio'
+            for missing in [10,30,50,70,90,100]: # 0, 10, 30, 50, 70, 90,
                 print(f"\n>>> Evaluating with {missing}% of '{mismodal}' modality missing...")
 
                 test_loader = data.DataLoader(
-                    XDVideoMisM(
+                    XDVideoCorrM(
                         root_dir=config.root_dir,
                         mode='Test',
                         modal=config.modal,

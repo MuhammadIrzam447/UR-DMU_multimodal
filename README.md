@@ -79,5 +79,12 @@ python xd_infer.py >> use the args.modal with "multimodal"
 
 Multimodal Evaluation using Missing Modalities for XD_Violence dataset
 ```
-python xd_infer.py >> --modal "multimodal" and --missing_modality
+python xd_infer.py >> --modal "multimodal" & --missing_modality 
+dataloader_class >> XDVideoMisM
+``` 
+
+Multimodal Evaluation Under Corrupted Modalities for XD_Violence dataset
+```
+python xd_infer.py >> --modal "multimodal" & --missing_modality
+dataloader_class >> XDVideoCorrM
 ``` 

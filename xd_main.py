@@ -11,7 +11,8 @@ from xd_test import test
 from model import *
 from utils import Visualizer
 
-from dataset_loader import *
+# from dataset_loader import *
+from dataset_loader import XDVideoSB as XDVideo #for single_branch
 from tqdm import tqdm
 
 import os
@@ -67,10 +68,16 @@ if __name__ == "__main__":
     os.environ["COMET_DISABLE_ENVIRONMENT_LOGGING"] = "true"
     # wind = Visualizer(env = 'XD_URDMU', port = "2022", use_incoming_socket = False)
     experiment = Experiment(
-        api_key="",
+        api_key="V1mIhk7fbbtcKxqndKLWtJj6a",
         project_name="dmu",
         workspace="muhammadirzam447"
     )
+    # if args.debug == True:
+    #     experiment.set_name("Test")
+    #     experiment_name = "Test"
+    # else:
+    #     experiment_name = experiment.get_name()
+
     experiment_name = experiment.get_name()
     print(f"Experiment name: {experiment_name}")
     experiment.log_parameter("seed", config.seed)
